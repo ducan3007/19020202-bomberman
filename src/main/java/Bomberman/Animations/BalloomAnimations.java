@@ -17,13 +17,17 @@ public class BalloomAnimations {
     public BalloomAnimations(Entity e, double scale){
         Image img = Renderer.getSpriteSheet();
         playSpeed = 0.18;
+        
         List<Rectangle> Ballom = new ArrayList<>();
+        
         Ballom.add(new Rectangle(1,123,16,16));
         Ballom.add(new Rectangle(31,123,16,16));
         Ballom.add(new Rectangle(61,123,16,16));
         ballom = new Sprite(e,16,playSpeed,img,Ballom,16,16,scale);
         idle = new Sprite(e,16,playSpeed,1,123,1,16,16,scale);
+        
         List<Rectangle> Die = new ArrayList<>();
+        
         Die.add(new Rectangle(91,123,16,16));
         Die.add(new Rectangle(1,153,16,16));
         Die.add(new Rectangle(31,153,16,16));

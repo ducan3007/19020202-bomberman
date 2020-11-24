@@ -18,10 +18,8 @@ public class InputManager {
     public static void handlePlayerMovements() {
         List keyInputs = EventHandler.getInputList();
         Player player = Sandbox.getPlayer();
-        GlobalVariables.PlayerPositionX = player.getPositionX();
-        GlobalVariables.PlayerPositionY = player.getPositionY();
-
         Vector<Balloom> balloom = Sandbox.getBallooms();
+        
         for (int i = 0; i < balloom.size(); i++) {
             balloom.elementAt(i).RandomMoving();
         }

@@ -1,6 +1,7 @@
 
 package Bomberman.Scene;
 
+import Bomberman.Entity.Tiles.Tile;
 import Bomberman.GameLoop;
 import Bomberman.Entity.Enemy.Balloom;
 import Bomberman.Entity.Enemy.Oneal;
@@ -41,6 +42,7 @@ public class Sandbox {
     }
 
     private static Vector<Entity> entities = new Vector<>();
+    private static Vector<Tile> tiles = new Vector<>();
 
     public static Vector<Entity> getEntities() {
         return entities;
@@ -83,25 +85,22 @@ public class Sandbox {
 
     public static void loadMap() throws IOException {
         String path = "Rescourses/maps/Level" + Integer.toString(Level) + ".txt";
-        Vector<Wall> walls = new Vector<Wall>();
-        Vector<Grass> grasses = new Vector<Grass>();
-        Vector<Brick> bricks = new Vector<Brick>();
         try (BufferedReader inputStream = new BufferedReader(new FileReader(path))) {
             String line;
             int y = 0;
             while ((line = inputStream.readLine()) != null) {
                 line += "c";
                 for (int x = 0; x < line.length(); x++) {
-                    grasses.add(new Grass(x * CELL_SIZE, y * CELL_SIZE));
+                    tiles.add(new Grass(x * CELL_SIZE, y * CELL_SIZE));
                     switch (line.charAt(x)) {
                         case '#':
-                            walls.add(new Wall(x * CELL_SIZE, y * CELL_SIZE));
+                            tiles.add(new Wall(x * CELL_SIZE, y * CELL_SIZE));
                             break;
                         case 'p':
                             setPlayer(new Player(x * CELL_SIZE, y * CELL_SIZE));
                             break;
                         case '*':
-                            bricks.add(new Brick(x * CELL_SIZE, y * CELL_SIZE, -1));
+                            tiles.add(new Brick(x * CELL_SIZE, y * CELL_SIZE, -1));
                             break;
                         case '1':
                             ballooms.add(new Balloom(x * CELL_SIZE, y * CELL_SIZE));
@@ -110,16 +109,16 @@ public class Sandbox {
                             ballooms.add(new Oneal(x * CELL_SIZE, y * CELL_SIZE));
                             break;
                         case 'x':
-                            bricks.add(new Brick(x * CELL_SIZE, y * CELL_SIZE, 0));
+                            tiles.add(new Brick(x * CELL_SIZE, y * CELL_SIZE, 0));
                             break;
                         case 'f':
-                            bricks.add(new Brick(x * CELL_SIZE, y * CELL_SIZE, 1));
+                            tiles.add(new Brick(x * CELL_SIZE, y * CELL_SIZE, 1));
                             break;
                         case 'b':
-                            bricks.add(new Brick(x * CELL_SIZE, y * CELL_SIZE, 2));
+                            tiles.add(new Brick(x * CELL_SIZE, y * CELL_SIZE, 2));
                             break;
                         case 's':
-                            bricks.add(new Brick(x * CELL_SIZE, y * CELL_SIZE, 3));
+                            tiles.add(new Brick(x * CELL_SIZE, y * CELL_SIZE, 3));
                             break;
                     }
                 }
@@ -131,16 +130,10 @@ public class Sandbox {
             addEntityToGame(balloom);
         }
 
-        for (Grass grass : grasses) {
-            addEntityToGame(grass);
-        }
-        for (Wall wall : walls) {
-            addEntityToGame(wall);
+        for (Tile tile : tiles) {
+            addEntityToGame(tile);
         }
 
-        for (Brick brick : bricks) {
-            addEntityToGame(brick);
-        }
         System.gc();
     }
 
@@ -152,9 +145,9 @@ public class Sandbox {
     }
 
     public static void NewGame() {
-        entities.removeAllElements();
-        ballooms.removeAllElements();
-
+        entities.clear();
+        ballooms.clear();
+        tiles.clear();
         if (!passLevel) {
             Player.step = 4;
             Player.bombCount = 1;
@@ -174,10 +167,6 @@ public class Sandbox {
 
     public static GraphicsContext getGraphicsContext() {
         return gc;
-    }
-
-    public static Canvas getCanvas() {
-        return canvas;
     }
 
     public static Vector<Balloom> getBallooms() {

@@ -18,12 +18,15 @@ public class OnealAnimations {
         Image img = Renderer.getSpriteSheet();
         playSpeed = 0.2;
         List<Rectangle> Oneal = new ArrayList<>();
+        
         Oneal.add(new Rectangle(121,123,16,16));
         Oneal.add(new Rectangle(151,123,16,16));
         Oneal.add(new Rectangle(181,123,16,16));
         oneal = new Sprite(e,16,playSpeed,img,Oneal,16,16,scale);
         idle = new Sprite(e,16,playSpeed,121,123,1,16,16,scale);
+        
         List<Rectangle> Die = new ArrayList<>();
+        
         Die.add(new Rectangle(211,123,16,16));
         Die.add(new Rectangle(241,123,16,16));
         Die.add(new Rectangle(31,153,16,16));

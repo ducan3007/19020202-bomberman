@@ -14,8 +14,6 @@ public class GlobalVariables {
     public static int offSet = 48;
     public static boolean CameraMoving = false;
     public static int Bricktiming = 0;
-    public static int PlayerPositionX;
-    public static int PlayerPositionY;
     public static boolean passLevel = false;
     public static boolean NewGame = false;
     public static int Level = 1;

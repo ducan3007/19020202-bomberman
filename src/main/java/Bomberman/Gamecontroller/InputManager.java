@@ -6,8 +6,8 @@ import Bomberman.GlobalVariables.Direction;
 import Bomberman.GlobalVariables.GlobalVariables;
 import Bomberman.Entity.Enemy.Balloom;
 import Bomberman.Entity.Player.Player;
-import Bomberman.Entity.StaticObjects.BlackBomb;
-import Bomberman.Scene.Sandbox;
+import Bomberman.Entity.BombnFlame.BlackBomb;
+import Bomberman.Scene.Board;
 
 import java.util.Vector;
 
@@ -16,10 +16,11 @@ import javafx.scene.input.KeyCode;
 public class InputManager {
 
     public static void handlePlayerMovements() {
+
         List keyInputs = EventHandler.getInputList();
-        Player player = Sandbox.getPlayer();
-        Vector<Balloom> balloom = Sandbox.getBallooms();
-        
+        Player player = Board.getPlayer();
+        Vector<Balloom> balloom = Board.getBallooms();
+
         for (int i = 0; i < balloom.size(); i++) {
             balloom.elementAt(i).RandomMoving();
         }
@@ -63,7 +64,7 @@ public class InputManager {
                 int b = player.getPositionY();
                 double c = Math.round((double) a / temp);
                 double e = Math.round((double) b / temp);
-                Sandbox.addEntityToGame(new BlackBomb((int) c * 48 + 8, (int) e * 48 + 8));
+                Board.addEntityToGame(new BlackBomb((int) c * 48 + 8, (int) e * 48 + 8));
                 player.decrementBombCount();
                 keyInputs.remove(KeyCode.SPACE);
             }

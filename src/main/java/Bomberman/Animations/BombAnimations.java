@@ -25,12 +25,14 @@ public class BombAnimations {
     }
 
     public BombAnimations(Entity e) {
-        Image img = Renderer.getSpriteSheet();
+        Image img = Renderer.getmainSheet();
         playSpeed=0.2;
         List<Rectangle> bomb=new ArrayList<>();
+
         bomb.add(new Rectangle(181, 94, 16, 15));
         bomb.add(new Rectangle(211, 93, 15, 16));
         bomb.add(new Rectangle(241, 93, 16, 16));
+
         grass = new Sprite(e, 16, 0, 0, 245, 1,  16 , 16 ,2.0);
         blackBomb = new Sprite(e,30,playSpeed,img, bomb, GlobalVariables.PLAYER_WIDTH+2, GlobalVariables.PLAYER_HEIGHT+2, e.getScale());
     }

@@ -1,4 +1,4 @@
-package Bomberman.Entity.StaticObjects;
+package Bomberman.Entity.BombnFlame;
 
 import Bomberman.Renderer;
 import Bomberman.Animations.BombAnimations;
@@ -8,7 +8,7 @@ import Bomberman.GlobalVariables.GlobalVariables;
 import Bomberman.Entity.Entity;
 import Bomberman.Entity.StaticEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
-import Bomberman.Scene.Sandbox;
+import Bomberman.Scene.Board;
 
 import java.util.Date;
 
@@ -17,22 +17,25 @@ public class BlackBomb implements StaticEntity {
     public static int radius = 1;
     public boolean CollidedPlayer = false;
     public boolean PlayerCollisionFriendly = true;
+
     int positionX;
     int positionY;
     int height;
     int width;
     int timerDurationInMillis = 2000;
     int layer;
+    double scale;
+
     boolean exploded = false;
     boolean explodedbyFlame = false;
-    Sprite bombsprite;
-    double scale;
-    FlameAnimations[] Explosion ;
-    RectBoundedBox entityBoundary;
-    BombAnimations bomb_animations;
+
     Date plantedTime;
     Date explosionTime;
     STATE bombState;
+    Sprite bombsprite;
+    FlameAnimations[] Explosion;
+    RectBoundedBox entityBoundary;
+    BombAnimations bomb_animations;
 
     enum STATE {
         INACTIVE,
@@ -70,9 +73,9 @@ public class BlackBomb implements StaticEntity {
     public STATE checkBombState() {
         long plantedtime = plantedTime.getTime();
         if (!exploded) {
-            for (Entity e : Sandbox.getEntities()) {
+            for (Entity e : Board.getEntities()) {
                 if (e instanceof Flame && ((Flame) e).getFlameState()) {
-                    if (e.isColliding(this)) {
+                    if (e.isCollideEntity(this)) {
                         explodedbyFlame = true;
                         explosionTime = new Date();
                         GlobalVariables.Bricktiming = 2000 - (int) (explosionTime.getTime() - plantedtime);
@@ -109,7 +112,7 @@ public class BlackBomb implements StaticEntity {
 
 
     @Override
-    public void draw() {
+    public void render() {
         if (checkBombState() == STATE.ACTIVE) {
             Renderer.playAnimation(bombsprite);
         }
@@ -134,7 +137,7 @@ public class BlackBomb implements StaticEntity {
     }
 
     @Override
-    public boolean isColliding(Entity e) {
+    public boolean isCollideEntity(Entity e) {
         RectBoundedBox rect = e.getBoundingBox();
         return entityBoundary.checkCollision(rect);
     }
@@ -156,7 +159,7 @@ public class BlackBomb implements StaticEntity {
     }
 
     @Override
-    public boolean isPlayerCollisionFriendly() {
+    public boolean isCollidePlayer() {
         return this.PlayerCollisionFriendly;
     }
 

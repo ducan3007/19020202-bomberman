@@ -7,22 +7,24 @@ import Bomberman.GlobalVariables.GlobalVariables;
 import Bomberman.Entity.Entity;
 import Bomberman.Entity.KillableEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
-import Bomberman.Scene.Sandbox;
+import Bomberman.Scene.Board;
 
 import java.util.Date;
 
 public class Brick extends Tile implements KillableEntity {
     int items;
+
     boolean isAlive = true;
     boolean disappear = false;
     boolean check = true;
     boolean Animated = false;
+
+    Date destroyedTime;
+    Date animationTime;
     Sprite sprite;
     Sprite grass;
     Sprite CurrentSprite;
     BrickAnimations brickAnimations;
-    Date destroyedTime;
-    Date animationTime;
 
     public Brick(int x, int y, int items) {
         super(x, y);
@@ -36,8 +38,8 @@ public class Brick extends Tile implements KillableEntity {
     }
 
     public void setBrickState(boolean temp) {
+        GlobalVariables.Bricktiming = 0;
         if (check && temp) {
-            GlobalVariables.Bricktiming = 0;
             die();
         }
     }
@@ -60,7 +62,7 @@ public class Brick extends Tile implements KillableEntity {
     }
 
     @Override
-    public void draw() {
+    public void render() {
         if (BrickState()) {
             Renderer.playAnimation(CurrentSprite);
         }
@@ -74,21 +76,22 @@ public class Brick extends Tile implements KillableEntity {
         check = false;
         destroyedTime = new Date();
     }
+
     @Override
-    public boolean remove(){
-        if(disappear){
-            switch (items){
+    public boolean remove() {
+        if (disappear) {
+            switch (items) {
                 case 0:
-                    Sandbox.addEntityToGame(new Portal(positionX,positionY));
+                    Board.addEntityToGame(new Portal(positionX, positionY));
                     break;
                 case 1:
-                    Sandbox.addEntityToGame(new FlamePowerup(positionX,positionY));
+                    Board.addEntityToGame(new FlamePowerup(positionX, positionY));
                     break;
                 case 2:
-                    Sandbox.addEntityToGame(new BombPowerup(positionX,positionY));
+                    Board.addEntityToGame(new BombPowerup(positionX, positionY));
                     break;
                 case 3:
-                    Sandbox.addEntityToGame(new SpeedPowerup(positionX,positionY));
+                    Board.addEntityToGame(new SpeedPowerup(positionX, positionY));
                     break;
             }
         }
@@ -96,7 +99,7 @@ public class Brick extends Tile implements KillableEntity {
     }
 
     @Override
-    public boolean isColliding(Entity e) {
+    public boolean isCollideEntity(Entity e) {
         RectBoundedBox rect = e.getBoundingBox();
         return super.boundedBox.checkCollision(rect);
     }

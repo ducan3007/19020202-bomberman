@@ -17,7 +17,7 @@ public class Wall extends Tile implements StaticEntity {
     }
 
     @Override
-    public boolean isColliding(Entity b) {
+    public boolean isCollideEntity(Entity b) {
         return true;
     }
 

@@ -14,9 +14,9 @@ import Bomberman.Entity.Tiles.SpeedPowerup;
 import Bomberman.Entity.KillableEntity;
 import Bomberman.Entity.MovingEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
-import Bomberman.Entity.StaticObjects.BlackBomb;
-import Bomberman.Entity.StaticObjects.Flame;
-import Bomberman.Scene.Sandbox;
+import Bomberman.Entity.BombnFlame.BlackBomb;
+import Bomberman.Entity.BombnFlame.Flame;
+import Bomberman.Scene.Board;
 
 import java.util.Date;
 
@@ -31,18 +31,17 @@ public class Player implements MovingEntity, KillableEntity {
     boolean isAlive = true;
     boolean disappear = false;
 
-    int health = 100;
-    int positionX = 0;
-    int positionY = 0;
+    int positionX;
+    int positionY;
     int layer;
 
-    double scale = 2;
+    double scale;
 
     Date dieTime;
-    RectBoundedBox playerBoundary;
     Sprite currentSprite;
-    PlayerAnimations playerAnimations;
     Direction currentDirection;
+    RectBoundedBox playerBoundary;
+    PlayerAnimations playerAnimations;
 
     public Player() {
         init(64, 64);
@@ -50,7 +49,6 @@ public class Player implements MovingEntity, KillableEntity {
 
     public Player(int posX, int posY) {
         init(posX, posY);
-        health = 100;
         layer = 0;
     }
 
@@ -58,6 +56,7 @@ public class Player implements MovingEntity, KillableEntity {
         playerAnimations = new PlayerAnimations(this, 2.2);
         positionX = x;
         positionY = y;
+        setScale(2);
         playerBoundary = new RectBoundedBox(positionX + (int) (GlobalVariables.PLAYER_WIDTH),
                 positionY + (int) (GlobalVariables.PLAYER_WIDTH),
                 (int) (GlobalVariables.PLAYER_WIDTH * (getScale() - 0.6)),
@@ -83,13 +82,13 @@ public class Player implements MovingEntity, KillableEntity {
     }
 
     @Override
-    public boolean isColliding(Entity b) {
+    public boolean isCollideEntity(Entity b) {
         RectBoundedBox otherEntityBoundary = b.getBoundingBox();
         return playerBoundary.checkCollision(otherEntityBoundary);
     }
 
     @Override
-    public void draw() {
+    public void render() {
         if (currentSprite != null && isAlive()) {
             Renderer.playAnimation(currentSprite);
         }
@@ -110,36 +109,35 @@ public class Player implements MovingEntity, KillableEntity {
 
     private boolean checkCollisions(int x, int y) {
         playerBoundary.setPosition(x, y);
-        for (Entity e : Sandbox.getEntities()) {
-            if(e instanceof Portal && isColliding(e) && Sandbox.enemy == 0){
-                Level = (Level%4)+1;
+        for (Entity e : Board.getEntities()) {
+            if (e instanceof Portal && isCollideEntity(e) && Board.enemy == 0) {
+                Level = (Level % 4) + 1;
                 GlobalVariables.NewGame = true;
                 passLevel = true;
-            }
-            else {
-                if (e instanceof FlamePowerup && isColliding(e)) {
+            } else {
+                if (e instanceof FlamePowerup && isCollideEntity(e)) {
                     BlackBomb.radius++;
                     ((FlamePowerup) e).checkCollision(true);
                 }
-                if (e instanceof BombPowerup && isColliding(e)) {
+                if (e instanceof BombPowerup && isCollideEntity(e)) {
                     bombCount++;
                     ((BombPowerup) e).checkCollision(true);
                 }
-                if (e instanceof SpeedPowerup && isColliding(e)) {
+                if (e instanceof SpeedPowerup && isCollideEntity(e)) {
                     step++;
                     ((SpeedPowerup) e).checkCollision(true);
                 }
                 if (e instanceof BlackBomb) {
                     boolean bol1 = Math.abs(this.getPositionY() - e.getPositionY()) < 42;
                     boolean bol2 = Math.abs(this.getPositionX() - e.getPositionX()) < 42;
-                    if (bol1 && bol2 && ((BlackBomb) e).CollidedPlayer == false && e.isPlayerCollisionFriendly() == true) {
+                    if (bol1 && bol2 && ((BlackBomb) e).CollidedPlayer == false && e.isCollidePlayer() == true) {
                         ((BlackBomb) e).CollidedPlayer = true;
                     }
                     if (!bol1 || !bol2 && ((BlackBomb) e).CollidedPlayer == true) {
                         ((BlackBomb) e).PlayerCollisionFriendly = false;
                     }
                 }
-                if (!(e instanceof Balloom) && e != this && isColliding(e) && !e.isPlayerCollisionFriendly()) {
+                if (!(e instanceof Balloom) && e != this && isCollideEntity(e) && !e.isCollidePlayer()) {
                     playerBoundary.setPosition(positionX, positionY);
                     return true;
                 }
@@ -151,9 +149,9 @@ public class Player implements MovingEntity, KillableEntity {
 
     public boolean remove() {
         if (isAlive) {
-            for (Entity e : Sandbox.getEntities()) {
-                if (  (e instanceof Flame && ((Flame) e).getFlameState() ) || e instanceof Balloom) {
-                    if (isColliding(e)) {
+            for (Entity e : Board.getEntities()) {
+                if ((e instanceof Flame && ((Flame) e).getFlameState()) || e instanceof Balloom) {
+                    if (isCollideEntity(e)) {
                         die();
                         break;
                     }
@@ -164,7 +162,7 @@ public class Player implements MovingEntity, KillableEntity {
     }
 
     public boolean updatePosition() {
-        if (getPositionX() - 47 < 0 && currentDirection == Direction.LEFT ) {
+        if (getPositionX() - 47 < 0 && currentDirection == Direction.LEFT) {
             GlobalVariables.offSet = -96;
             return true;
         }
@@ -238,7 +236,7 @@ public class Player implements MovingEntity, KillableEntity {
     }
 
     @Override
-    public boolean isPlayerCollisionFriendly() {
+    public boolean isCollidePlayer() {
         return true;
     }
 
@@ -252,7 +250,7 @@ public class Player implements MovingEntity, KillableEntity {
         return scale;
     }
 
-    public void setScale(int scale) {
+    public void setScale(double scale) {
         this.scale = scale;
     }
 

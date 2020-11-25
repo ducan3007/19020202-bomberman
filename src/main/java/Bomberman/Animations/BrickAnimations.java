@@ -16,15 +16,18 @@ public class BrickAnimations {
     }
     public void setBrickanimation(Sprite sprite){this.Brickanimation = sprite;}
     public BrickAnimations(Entity e){
-        Image img = Renderer.getSpriteSheet();
+        Image img = Renderer.getmainSheet();
         playspeed = 0.15;
+
         List<Rectangle> destroyed = new ArrayList<>();
+
         destroyed.add(new Rectangle(35,225,15,15));
         destroyed.add(new Rectangle(53,225,15,15));
         destroyed.add(new Rectangle(71,225,15,15));
         destroyed.add(new Rectangle(89,225,15,15));
         destroyed.add(new Rectangle(107,225,15,15));
         destroyed.add(new Rectangle(125,225,15,15));
+
         Brickanimation = new Sprite(e,16,playspeed,img,destroyed,16,16,e.getScale());
     }
 

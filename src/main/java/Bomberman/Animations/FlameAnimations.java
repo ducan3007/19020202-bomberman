@@ -2,19 +2,19 @@ package Bomberman.Animations;
 
 import Bomberman.Entity.Entity;
 import Bomberman.Entity.Tiles.Brick;
-import Bomberman.Entity.StaticObjects.Flame;
+import Bomberman.Entity.BombnFlame.Flame;
 import Bomberman.Entity.Tiles.Wall;
-import Bomberman.Scene.Sandbox;
+import Bomberman.Scene.Board;
 
 public class FlameAnimations {
-    public int direction;
-    public int centerX;
-    public int centerY;
-    public int positionX;
-    public int positionY;
-    public int radius;
-    public Flame[] flames;
-    public int time;
+     int direction;
+     int centerX;
+     int centerY;
+     int positionX;
+     int positionY;
+     int radius;
+     Flame[] flames;
+     int time;
     public FlameAnimations(int x, int y, int direction, int radius) {
         centerX = x;
         centerY = y;
@@ -40,7 +40,7 @@ public class FlameAnimations {
             if (direction == 1) x += 24;
             if (direction == 2) y += 24;
             if (direction == 3) x -= 24;
-            for (Entity e : Sandbox.getEntities()) {
+            for (Entity e : Board.getEntities()) {
                 if (e instanceof Wall || e instanceof Brick) {
                     if ((Math.abs(y - (e).getPositionY()) < 40) && (Math.abs(x - e.getPositionX()) < 40)) {
                         if (e instanceof Brick) {
@@ -100,13 +100,13 @@ public class FlameAnimations {
     }
     public void addFlameToGame(){
         for(int i = 0;i<flames.length;++i){
-            Sandbox.addEntityToGame(flames[i]);
+            Board.addEntityToGame(flames[i]);
         }
     }
     public void Render() {
         for (int i = 0; i < flames.length; ++i) {
             flames[i].setFlameState(true);
-            flames[i].draw();
+            flames[i].render();
         }
     }
 

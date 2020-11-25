@@ -1,4 +1,4 @@
-package Bomberman.Entity.StaticObjects;
+package Bomberman.Entity.BombnFlame;
 
 import Bomberman.Renderer;
 import Bomberman.Animations.Sprite;
@@ -14,7 +14,8 @@ import java.util.Date;
 import java.util.List;
 
 public class Flame implements StaticEntity {
-    static Image img = Renderer.getSpriteSheet();
+
+    static Image img = Renderer.getmainSheet();
     static List<Rectangle> vertical = new ArrayList<>();
     static List<Rectangle> horizonal = new ArrayList<>();
     static List<Rectangle> up = new ArrayList<>();
@@ -22,6 +23,7 @@ public class Flame implements StaticEntity {
     static List<Rectangle> left = new ArrayList<>();
     static List<Rectangle> right = new ArrayList<>();
     static List<Rectangle> center = new ArrayList<>();
+
     static {
         vertical.add(new Rectangle(34, 170, 16, 17));
         vertical.add(new Rectangle(52, 206, 16, 17));
@@ -59,25 +61,32 @@ public class Flame implements StaticEntity {
         center.add(new Rectangle(178, 188, 17, 17));
     }
 
-    RectBoundedBox boundedBox;
-    Sprite sprite;
-    boolean last;
     int positionX;
     int positionY;
     int direction;
-    int layer = -1;
+    int layer;
     int height;
     int width;
-    public int temp = 0;
-    double scale = 2.2;
+    int timing;
+
+    boolean last;
+
+    double scale;
     double splayspeed;
+
     Date explodeTime;
+    Sprite sprite;
+    RectBoundedBox boundedBox;
+
 
     public Flame(int x, int y, int direction, boolean last) {
         this.positionX = x;
         this.positionY = y;
         this.direction = direction;
         this.last = last;
+        timing = 0;
+        layer = -1;
+        scale = 2.2;
         splayspeed = 0.1;
         width = 16;
         height = 16;
@@ -119,21 +128,25 @@ public class Flame implements StaticEntity {
     }
 
     public boolean State = false;
-    public boolean getFlameState(){
+
+    public boolean getFlameState() {
         return State;
     }
-    public void setFlameState(boolean state){
+
+    public void setFlameState(boolean state) {
         State = state;
     }
+
     public void setTimeDuratione(int time) {
-        temp = time;
+        timing = time;
     }
+
     public boolean checkFlameState() {
         long time = explodeTime.getTime();
         long newDate = new Date().getTime();
-        if (newDate > (2000 - temp) + time) {
+        if (newDate > (2000 - timing) + time) {
             State = true;
-            if (newDate > ((2000 - temp) + 350) + time) {
+            if (newDate > ((2000 - timing) + 350) + time) {
                 return true;
             }
         }
@@ -153,20 +166,20 @@ public class Flame implements StaticEntity {
     }
 
     @Override
-    public void draw() {
+    public void render() {
         if (!checkFlameState()) {
             Renderer.playAnimation(sprite);
         }
     }
 
     @Override
-    public boolean isColliding(Entity e) {
+    public boolean isCollideEntity(Entity e) {
         RectBoundedBox rect = e.getBoundingBox();
         return boundedBox.checkCollision(rect);
     }
 
     @Override
-    public boolean isPlayerCollisionFriendly() {
+    public boolean isCollidePlayer() {
         return true;
     }
 

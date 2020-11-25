@@ -3,10 +3,10 @@ package Bomberman;
 import Bomberman.GlobalVariables.GlobalVariables;
 import Bomberman.Entity.Entity;
 import Bomberman.Entity.Player.Player;
-import Bomberman.Entity.StaticObjects.BlackBomb;
-import Bomberman.Entity.StaticObjects.Flame;
+import Bomberman.Entity.BombnFlame.BlackBomb;
+import Bomberman.Entity.BombnFlame.Flame;
 import Bomberman.Gamecontroller.InputManager;
-import Bomberman.Scene.Sandbox;
+import Bomberman.Scene.Board;
 
 import java.util.Vector;
 
@@ -15,21 +15,19 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class GameLoop {
 
-    static double currentGameTime;
-    static double oldGameTime;
-    static double deltaTime;
-    final static long startNanoTime = System.nanoTime();
+    static double currentTime;
+    static double prevTime;
+    final static long startTime = System.nanoTime();
 
-    public static double getCurrentGameTime() {
-        return currentGameTime;
+    public static double getcurrentTime() {
+        return currentTime;
     }
 
     public static void start(GraphicsContext gc) {
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
-                oldGameTime = currentGameTime;
-                currentGameTime = (currentNanoTime - startNanoTime) / (1000000000.0);
-                deltaTime = currentGameTime - oldGameTime;
+                prevTime = currentTime;
+                currentTime = (currentNanoTime - startTime) / (1000000000.0);
                 gc.clearRect(0, 0, GlobalVariables.CANVAS_WIDTH, GlobalVariables.CANVAS_WIDTH);
                 updateGame();
                 renderGame();
@@ -39,10 +37,10 @@ public class GameLoop {
 
     public static void updateGame() {
         InputManager.handlePlayerMovements();
-        Vector<Entity> entities = Sandbox.getEntities();
-        Player player = Sandbox.getPlayer();
+        Vector<Entity> entities = Board.getEntities();
+        Player player = Board.getPlayer();
         if (GlobalVariables.NewGame) {
-            Sandbox.NewGame();
+            Board.NewGame();
             GlobalVariables.NewGame = false;
             GlobalVariables.passLevel = false;
         }
@@ -67,15 +65,15 @@ public class GameLoop {
     }
 
     public static void renderGame() {
-        Vector<Entity> entities = Sandbox.getEntities();
+        Vector<Entity> entities = Board.getEntities();
         for (int i = 0; i < entities.size(); ++i) {
             Entity e = entities.elementAt(i);
             if (e instanceof Flame) {
                 if (((Flame) e).getFlameState()){
-                    e.draw();
+                    e.render();
                 }
             } else {
-                e.draw();
+                e.render();
             }
         }
     }

@@ -4,11 +4,12 @@ package Bomberman.Entity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
 
 public interface Entity {
-    boolean isColliding(Entity b);
 
-    boolean isPlayerCollisionFriendly();
+    boolean isCollideEntity(Entity b);
 
-    void draw();
+    boolean isCollidePlayer();
+
+    void render();
 
     int getPositionX();
 

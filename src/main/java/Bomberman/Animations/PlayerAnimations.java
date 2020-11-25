@@ -23,7 +23,7 @@ public class PlayerAnimations {
     double playSpeed;
 
     public PlayerAnimations(Entity e, double scale) {
-        Image img = Renderer.getSpriteSheet();
+        Image img = Renderer.getmainSheet();
         playSpeed = 0.1;
         moveDown = new Sprite(e, 30, playSpeed, 0, 0, 3, GlobalVariables.PLAYER_WIDTH, GlobalVariables.PLAYER_HEIGHT, scale);
         moveLeft = new Sprite(e, 30, playSpeed, 30, 0, 3, GlobalVariables.PLAYER_WIDTH, GlobalVariables.PLAYER_HEIGHT, scale);

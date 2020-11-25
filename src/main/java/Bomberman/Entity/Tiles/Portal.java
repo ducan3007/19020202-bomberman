@@ -8,7 +8,7 @@ public class Portal extends Tile implements StaticEntity {
         super(x,y);
         sprite = new Sprite(this,16,0,0,207,1,width,height,getScale());
     }
-    public boolean isPlayerCollisionFriendly() {
+    public boolean isCollidePlayer() {
         return true;
     }
 }

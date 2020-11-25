@@ -16,7 +16,7 @@ public class Grass extends Tile implements StaticEntity {
         boundedBox = new RectBoundedBox(positionX, positionY, (int) (width * (getScale() + 0.4)), (int) (height * (getScale() + 0.4)));
     }
     @Override
-    public boolean isColliding(Entity b) {
+    public boolean isCollideEntity(Entity b) {
         return false;
     }
     @Override
@@ -29,7 +29,7 @@ public class Grass extends Tile implements StaticEntity {
         return false;
     }
     @Override
-    public boolean isPlayerCollisionFriendly() {
+    public boolean isCollidePlayer() {
         return true;
     }
 

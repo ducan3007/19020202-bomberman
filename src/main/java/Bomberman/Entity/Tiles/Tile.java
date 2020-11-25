@@ -8,19 +8,22 @@ import Bomberman.Entity.StaticEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
 
 public class Tile implements StaticEntity {
-
     int positionX;
     int positionY;
     int width;
     int height;
     int layer;
+
     double scale;
-    boolean remove =false;
+    boolean remove = false;
+
     RectBoundedBox boundedBox;
     Sprite sprite;
-    Tile(){
+
+    Tile() {
 
     }
+
     Tile(int x, int y) {
         positionX = x;
         positionY = y;
@@ -28,11 +31,13 @@ public class Tile implements StaticEntity {
         height = 16;
         scale = 3.1;
         layer = 1;
-        boundedBox = new RectBoundedBox(positionX, positionY,(int)(width*(getScale()+0.9 )),(int)(height*(getScale() + 0.9)));
+        boundedBox = new RectBoundedBox(positionX, positionY, (int) (width * (getScale() + 0.9)), (int) (height * (getScale() + 0.9)));
     }
-    public void setSprite(Sprite sprite){
+
+    public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
+
     public void checkCollision(boolean remove) {
         this.remove = remove;
     }
@@ -41,16 +46,16 @@ public class Tile implements StaticEntity {
         return remove;
     }
 
-    public void draw() {
+    public void render() {
         Renderer.playAnimation(sprite);
     }
 
-    public boolean isColliding(Entity e) {
+    public boolean isCollideEntity(Entity e) {
         RectBoundedBox rect = e.getBoundingBox();
         return boundedBox.checkCollision(rect);
     }
 
-    public boolean isPlayerCollisionFriendly() {
+    public boolean isCollidePlayer() {
         return false;
     }
 

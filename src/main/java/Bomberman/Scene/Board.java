@@ -7,7 +7,7 @@ import Bomberman.Entity.Enemy.Balloom;
 import Bomberman.Entity.Enemy.Oneal;
 import Bomberman.Entity.Entity;
 import Bomberman.Entity.Player.Player;
-import Bomberman.Entity.StaticObjects.BlackBomb;
+import Bomberman.Entity.BombnFlame.BlackBomb;
 import Bomberman.Entity.Tiles.Brick;
 import Bomberman.Entity.Tiles.Grass;
 import Bomberman.Entity.Tiles.Wall;
@@ -26,23 +26,24 @@ import java.util.Vector;
 
 import static Bomberman.GlobalVariables.GlobalVariables.*;
 
-public class Sandbox {
+public class Board {
 
     static Scene scene;
     static Group root;
     static Canvas canvas;
     static GraphicsContext gc;
-    private static boolean sceneStarted;
+    static boolean sceneStarted;
     static Player player;
-    public static Vector<Balloom> ballooms = new Vector<>();
+
     public static int enemy;
 
     static {
         sceneStarted = false;
     }
 
-    private static Vector<Entity> entities = new Vector<>();
-    private static Vector<Tile> tiles = new Vector<>();
+    static Vector<Balloom> ballooms = new Vector<>();
+    static Vector<Entity> entities = new Vector<>();
+    static Vector<Tile> tiles = new Vector<>();
 
     public static Vector<Entity> getEntities() {
         return entities;
@@ -75,8 +76,7 @@ public class Sandbox {
         try {
             loadMap();
         } catch (IOException e) {
-            System.err.println("Unable to load map file.");
-            System.exit(1);
+            System.err.println("Unable to load map");
         }
 
         EventHandler.attachEventHandlers(scene);

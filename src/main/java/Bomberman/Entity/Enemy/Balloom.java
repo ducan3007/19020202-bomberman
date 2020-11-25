@@ -9,9 +9,9 @@ import Bomberman.Entity.Entity;
 import Bomberman.Entity.KillableEntity;
 import Bomberman.Entity.MovingEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
-import Bomberman.Entity.StaticObjects.BlackBomb;
-import Bomberman.Entity.StaticObjects.Flame;
-import Bomberman.Scene.Sandbox;
+import Bomberman.Entity.BombnFlame.BlackBomb;
+import Bomberman.Entity.BombnFlame.Flame;
+import Bomberman.Scene.Board;
 
 import java.util.Date;
 import java.util.Random;
@@ -69,12 +69,12 @@ public class Balloom implements MovingEntity, KillableEntity {
     }
 
     @Override
-    public boolean isColliding(Entity b) {
+    public boolean isCollideEntity(Entity b) {
         RectBoundedBox temp = b.getBoundingBox();
         return boundedBox.checkCollision(temp);
     }
 
-    public void draw() {
+    public void render() {
         if (sprite != null && isAlive()) {
             Renderer.playAnimation(sprite);
         }
@@ -112,17 +112,17 @@ public class Balloom implements MovingEntity, KillableEntity {
     public void die() {
         isAlive = false;
         dieTime = new Date();
-        Sandbox.enemy--;
+        Board.enemy--;
     }
 
     public boolean checkCollisions(int x, int y) {
         boundedBox.setEnmeyPosition(x, y);
-        for (Entity e : Sandbox.getEntities()) {
-            if (e != this && isColliding(e) && e instanceof BlackBomb) {
+        for (Entity e : Board.getEntities()) {
+            if (e != this && isCollideEntity(e) && e instanceof BlackBomb) {
                 boundedBox.setEnmeyPosition(positionX, positionY);
                 return true;
             }
-            if (!(e instanceof Balloom) && isColliding(e) && !e.isPlayerCollisionFriendly()) {
+            if (!(e instanceof Balloom) && isCollideEntity(e) && !e.isCollidePlayer()) {
                 checkCollision = true;
                 boundedBox.setEnmeyPosition(positionX, positionY);
                 return true;
@@ -136,7 +136,7 @@ public class Balloom implements MovingEntity, KillableEntity {
 
     public boolean remove() {
         if (isAlive) {
-            for (Entity e : Sandbox.getEntities()) {
+            for (Entity e : Board.getEntities()) {
                 if (e instanceof Flame && ((Flame) e).getFlameState()) {
                     if (Math.abs(this.positionX - ((Flame) e).getPositionX()) < 40 && Math.abs(this.positionY - ((Flame) e).getPositionY()) < 40) {
                         die();
@@ -198,7 +198,7 @@ public class Balloom implements MovingEntity, KillableEntity {
     }
 
     @Override
-    public boolean isPlayerCollisionFriendly() {
+    public boolean isCollidePlayer() {
         return false;
     }
 

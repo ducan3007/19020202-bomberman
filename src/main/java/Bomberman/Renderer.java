@@ -38,11 +38,11 @@ public class Renderer {
     }
 
 
-    public static void playAnimation(GraphicsContext gc, double time, int actualSize, int pointX, int pointY, int numberOfFrames, int x, int y, double width, double height, double scale, double playSpeed) {
+    public static void playAnimation(GraphicsContext gc, double time, int sizeOnSheet, int pointX, int pointY, int numberOfFrames, int x, int y, double width, double height, double scale, double playSpeed) {
         double speed = playSpeed >= 0 ? playSpeed : 0.3;
         int index = CurrentFrame(time, numberOfFrames, speed);
         int SpriteSheetX = pointX;
-        int SpriteSheetY = pointY + index * actualSize;
+        int SpriteSheetY = pointY + index * sizeOnSheet;
         gc.drawImage(img, SpriteSheetX, SpriteSheetY, width, height, x, y, width * scale, height * scale);
     }
 

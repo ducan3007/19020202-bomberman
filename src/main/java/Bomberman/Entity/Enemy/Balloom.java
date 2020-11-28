@@ -15,7 +15,7 @@ import Bomberman.Scene.Board;
 import java.util.Date;
 import java.util.Random;
 
-public class Balloom extends KillableEntity {
+public class Balloom extends MovingEntity {
 
     int dir = 0;
     boolean isAlive = true;

@@ -21,9 +21,9 @@ public class Sprite {
     public boolean hasSpriteArrayImages;
     public Entity entity;
 
-    public Sprite(Entity e, int actualSize, double playSpeed, int spriteLocationOnSheetX, int spriteLocationOnSheetY, int numberOfFrames, double width, double height,
+    public Sprite(Entity e, int sizeOnSheet, double playSpeed, int spriteLocationOnSheetX, int spriteLocationOnSheetY, int numberOfFrames, double width, double height,
                   double scale) {
-        this.actualSize = actualSize;
+        this.actualSize = sizeOnSheet;
         this.playSpeed = playSpeed;
         this.spriteLocationOnSheetX = spriteLocationOnSheetX;
         this.spriteLocationOnSheetY = spriteLocationOnSheetY;
@@ -34,8 +34,8 @@ public class Sprite {
         this.entity = e;
     }
 
-    public Sprite(Entity e, int actualSize, double playSpeed, Image spriteSheet, List<Rectangle> specifications, double width, double height, double scale) {
-        this.actualSize = actualSize;
+    public Sprite(Entity e, int sizeOnSheet, double playSpeed, Image spriteSheet, List<Rectangle> specifications, double width, double height, double scale) {
+        this.actualSize = sizeOnSheet;
         this.playSpeed = playSpeed;
         this.numberOfFrames = specifications.size();
         this.width = width;

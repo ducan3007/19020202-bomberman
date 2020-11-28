@@ -3,28 +3,20 @@ package Bomberman.Entity.BombnFlame;
 import Bomberman.Renderer;
 import Bomberman.Animations.BombAnimations;
 import Bomberman.Animations.FlameAnimations;
-import Bomberman.Animations.Sprite;
 import Bomberman.GlobalVariables.GlobalVariables;
 import Bomberman.Entity.Entity;
-import Bomberman.Entity.StaticEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
 import Bomberman.Scene.Board;
 
 import java.util.Date;
 
 
-public class BlackBomb implements StaticEntity {
+public class BlackBomb extends Entity {
     public static int radius = 1;
     public boolean CollidedPlayer = false;
     public boolean PlayerCollisionFriendly = true;
 
-    int positionX;
-    int positionY;
-    int height;
-    int width;
     int timerDurationInMillis = 2000;
-    int layer;
-    double scale;
 
     boolean exploded = false;
     boolean explodedbyFlame = false;
@@ -32,9 +24,7 @@ public class BlackBomb implements StaticEntity {
     Date plantedTime;
     Date explosionTime;
     STATE bombState;
-    Sprite bombsprite;
     FlameAnimations[] Explosion;
-    RectBoundedBox entityBoundary;
     BombAnimations bomb_animations;
 
     enum STATE {
@@ -49,10 +39,10 @@ public class BlackBomb implements StaticEntity {
         width = 16;
         height = 16;
         layer = 1;
-        setScale(1.8);
+        scale = 1.8;
         bomb_animations = new BombAnimations(this);
-        bombsprite = bomb_animations.getBlackBomb();
-        entityBoundary = new RectBoundedBox(positionX, positionY, (int) (width * (getScale() + 1.35)), (int) (height * (getScale() + 1.65)));
+        sprite = bomb_animations.getBlackBomb();
+        boundedBox = new RectBoundedBox(positionX, positionY, (int) (width * (getScale() + 1.35)), (int) (height * (getScale() + 1.65)));
         plantedTime = new Date();
         bombState = STATE.ACTIVE;
         Explosion = new FlameAnimations[5];
@@ -90,7 +80,7 @@ public class BlackBomb implements StaticEntity {
         if (explodedbyFlame) {
             if (!exploded) {
                 exploded = true;
-                bombsprite = bomb_animations.getGrass();
+                sprite = bomb_animations.getGrass();
             }
             if (exploded) {
                 return STATE.INACTIVE;
@@ -100,7 +90,7 @@ public class BlackBomb implements StaticEntity {
             if (!exploded && (new Date().getTime() > timerDurationInMillis + plantedtime)) {
                 explosionTime = new Date();
                 exploded = true;
-                bombsprite = bomb_animations.getGrass();
+                sprite = bomb_animations.getGrass();
                 return STATE.EXPLODED;
             }
             if (exploded && new Date().getTime() > 350 + explosionTime.getTime()) {
@@ -114,7 +104,7 @@ public class BlackBomb implements StaticEntity {
     @Override
     public void render() {
         if (checkBombState() == STATE.ACTIVE) {
-            Renderer.playAnimation(bombsprite);
+            Renderer.playAnimation(sprite);
         }
         if (exploded) {
             Render();
@@ -129,33 +119,9 @@ public class BlackBomb implements StaticEntity {
     }
 
     @Override
-    public void setOffset() {
-        this.positionX -= GlobalVariables.offSet;
-        this.entityBoundary.removeRect();
-        this.entityBoundary.setOffset();
-        this.entityBoundary.setBoundary();
-    }
-
-    @Override
     public boolean isCollideEntity(Entity e) {
         RectBoundedBox rect = e.getBoundingBox();
-        return entityBoundary.checkCollision(rect);
-    }
-
-
-    @Override
-    public int getPositionX() {
-        return positionX;
-    }
-
-    @Override
-    public int getPositionY() {
-        return positionY;
-    }
-
-    @Override
-    public RectBoundedBox getBoundingBox() {
-        return entityBoundary;
+        return boundedBox.checkCollision(rect);
     }
 
     @Override
@@ -163,17 +129,4 @@ public class BlackBomb implements StaticEntity {
         return this.PlayerCollisionFriendly;
     }
 
-    @Override
-    public int getLayer() {
-        return layer;
-    }
-
-    @Override
-    public double getScale() {
-        return scale;
-    }
-
-    public void setScale(double scale) {
-        this.scale = scale;
-    }
 }

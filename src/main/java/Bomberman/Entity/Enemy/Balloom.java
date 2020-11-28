@@ -7,7 +7,6 @@ import Bomberman.GlobalVariables.Direction;
 import Bomberman.GlobalVariables.GlobalVariables;
 import Bomberman.Entity.Entity;
 import Bomberman.Entity.KillableEntity;
-import Bomberman.Entity.MovingEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
 import Bomberman.Entity.BombnFlame.BlackBomb;
 import Bomberman.Entity.BombnFlame.Flame;
@@ -16,21 +15,16 @@ import Bomberman.Scene.Board;
 import java.util.Date;
 import java.util.Random;
 
-public class Balloom implements MovingEntity, KillableEntity {
+public class Balloom extends KillableEntity {
 
-    int positionX = 0;
-    int positionY = 0;
-    int layer;
     int dir = 0;
     boolean isAlive = true;
     boolean disappear = false;
     boolean checkCollision = false;
     public int step;
-    double scale;
+
     Random random = new Random();
     Date dieTime;
-    RectBoundedBox boundedBox;
-    Sprite sprite;
     BalloomAnimations balloomAnimations;
     Direction currentDirection;
 
@@ -62,13 +56,11 @@ public class Balloom implements MovingEntity, KillableEntity {
         return isAlive;
     }
 
-    @Override
     public void setOffset() {
         this.positionX -= GlobalVariables.offSet;
         this.boundedBox.setOffset();
     }
 
-    @Override
     public boolean isCollideEntity(Entity b) {
         RectBoundedBox temp = b.getBoundingBox();
         return boundedBox.checkCollision(temp);
@@ -89,7 +81,7 @@ public class Balloom implements MovingEntity, KillableEntity {
     public void RandomMoving() {
         int direction;
         if ((positionX % 48 == 0 && positionY % 48 == 0) || ((positionY + 2) % 48 == 0) || ((positionX + 2) % 48 == 0) ||
-                ((positionX+8) % 48 == 0) || ((positionX-8) % 48 == 0) ) {
+                ((positionX + 8) % 48 == 0) || ((positionX - 8) % 48 == 0)) {
             direction = random.nextInt(4);
             dir = direction;
         }
@@ -148,7 +140,6 @@ public class Balloom implements MovingEntity, KillableEntity {
         return disappear;
     }
 
-    @Override
     public void move(int steps, Direction direction) {
         if (isAlive) {
             if (steps == 0) {
@@ -191,32 +182,13 @@ public class Balloom implements MovingEntity, KillableEntity {
         }
     }
 
-
+    @Override
     public RectBoundedBox getBoundingBox() {
         boundedBox.setPosition(positionX, positionY);
         return boundedBox;
     }
 
-    @Override
     public boolean isCollidePlayer() {
         return false;
-    }
-
-    public int getLayer() {
-        return layer;
-    }
-
-    public double getScale() {
-        return scale;
-    }
-
-    @Override
-    public int getPositionX() {
-        return positionX;
-    }
-
-    @Override
-    public int getPositionY() {
-        return positionY;
     }
 }

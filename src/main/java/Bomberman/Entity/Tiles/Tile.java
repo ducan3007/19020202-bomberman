@@ -2,27 +2,11 @@ package Bomberman.Entity.Tiles;
 
 import Bomberman.Renderer;
 import Bomberman.Animations.Sprite;
-import Bomberman.GlobalVariables.GlobalVariables;
 import Bomberman.Entity.Entity;
-import Bomberman.Entity.StaticEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
 
-public class Tile implements StaticEntity {
-    int positionX;
-    int positionY;
-    int width;
-    int height;
-    int layer;
-
-    double scale;
+public class Tile extends Entity {
     boolean remove = false;
-
-    RectBoundedBox boundedBox;
-    Sprite sprite;
-
-    Tile() {
-
-    }
 
     Tile(int x, int y) {
         positionX = x;
@@ -57,33 +41,6 @@ public class Tile implements StaticEntity {
 
     public boolean isCollidePlayer() {
         return false;
-    }
-
-    public int getPositionX() {
-        return positionX;
-    }
-
-    public int getPositionY() {
-        return positionY;
-    }
-
-    public void setOffset() {
-        this.positionX -= GlobalVariables.offSet;
-        this.boundedBox.removeRect();
-        this.boundedBox.setOffset();
-        this.boundedBox.setBoundary();
-    }
-
-    public RectBoundedBox getBoundingBox() {
-        return boundedBox;
-    }
-
-    public int getLayer() {
-        return layer;
-    }
-
-    public double getScale() {
-        return scale;
     }
 
 }

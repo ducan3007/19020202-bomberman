@@ -11,7 +11,6 @@ import Bomberman.Entity.Tiles.BombPowerup;
 import Bomberman.Entity.Tiles.FlamePowerup;
 import Bomberman.Entity.Tiles.Portal;
 import Bomberman.Entity.Tiles.SpeedPowerup;
-import Bomberman.Entity.KillableEntity;
 import Bomberman.Entity.MovingEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
 import Bomberman.Entity.BombnFlame.BlackBomb;
@@ -23,7 +22,7 @@ import java.util.Date;
 import static Bomberman.GlobalVariables.GlobalVariables.Level;
 import static Bomberman.GlobalVariables.GlobalVariables.passLevel;
 
-public class Player implements MovingEntity, KillableEntity {
+public class Player extends MovingEntity {
 
     public static int step = 4;
     public static int bombCount = 1;
@@ -31,21 +30,9 @@ public class Player implements MovingEntity, KillableEntity {
     boolean isAlive = true;
     boolean disappear = false;
 
-    int positionX;
-    int positionY;
-    int layer;
-
-    double scale;
-
     Date dieTime;
-    Sprite currentSprite;
     Direction currentDirection;
-    RectBoundedBox playerBoundary;
     PlayerAnimations playerAnimations;
-
-    public Player() {
-        init(64, 64);
-    }
 
     public Player(int posX, int posY) {
         init(posX, posY);
@@ -56,43 +43,38 @@ public class Player implements MovingEntity, KillableEntity {
         playerAnimations = new PlayerAnimations(this, 2.2);
         positionX = x;
         positionY = y;
-        setScale(2);
-        playerBoundary = new RectBoundedBox(positionX + (int) (GlobalVariables.PLAYER_WIDTH),
+        scale = 2;
+        boundedBox = new RectBoundedBox(positionX + (int) (GlobalVariables.PLAYER_WIDTH),
                 positionY + (int) (GlobalVariables.PLAYER_WIDTH),
                 (int) (GlobalVariables.PLAYER_WIDTH * (getScale() - 0.6)),
                 (int) (GlobalVariables.PLAYER_HEIGHT * (getScale() - 0.8))
         );
-        currentSprite = playerAnimations.getPlayerIdleSprite();
+        sprite = playerAnimations.getPlayerIdleSprite();
     }
 
 
-    private void setCurrentSprite(Sprite s) {
+    private void setSprite(Sprite s) {
         if (s != null) {
-            currentSprite = s;
+            sprite = s;
         }
     }
 
-    public boolean isAlive() {
-        return isAlive;
-    }
-
+    @Override
     public void setOffset() {
         this.positionX -= GlobalVariables.offSet;
-        this.playerBoundary.setOffset();
+        this.boundedBox.setOffset();
     }
 
-    @Override
     public boolean isCollideEntity(Entity b) {
         RectBoundedBox otherEntityBoundary = b.getBoundingBox();
-        return playerBoundary.checkCollision(otherEntityBoundary);
+        return boundedBox.checkCollision(otherEntityBoundary);
     }
 
-    @Override
     public void render() {
-        if (currentSprite != null && isAlive()) {
-            Renderer.playAnimation(currentSprite);
+        if (sprite != null && isAlive) {
+            Renderer.playAnimation(sprite);
         }
-        if (!isAlive()) {
+        if (!isAlive) {
             Renderer.playAnimation(playerAnimations.getPlayerDying());
             if (new Date().getTime() > (570 + dieTime.getTime())) {
                 disappear = true;
@@ -101,14 +83,13 @@ public class Player implements MovingEntity, KillableEntity {
         }
     }
 
-    @Override
     public void die() {
         isAlive = false;
         dieTime = new Date();
     }
 
     private boolean checkCollisions(int x, int y) {
-        playerBoundary.setPosition(x, y);
+        boundedBox.setPosition(x, y);
         for (Entity e : Board.getEntities()) {
             if (e instanceof Portal && isCollideEntity(e) && Board.enemy == 0) {
                 Level = (Level % 4) + 1;
@@ -138,12 +119,12 @@ public class Player implements MovingEntity, KillableEntity {
                     }
                 }
                 if (!(e instanceof Balloom) && e != this && isCollideEntity(e) && !e.isCollidePlayer()) {
-                    playerBoundary.setPosition(positionX, positionY);
+                    boundedBox.setPosition(positionX, positionY);
                     return true;
                 }
             }
         }
-        playerBoundary.setPosition(positionX, positionY);
+        boundedBox.setPosition(positionX, positionY);
         return false;
     }
 
@@ -175,11 +156,10 @@ public class Player implements MovingEntity, KillableEntity {
         return false;
     }
 
-    @Override
     public void move(int steps, Direction direction) {
         if (isAlive) {
             if (steps == 0) {
-                setCurrentSprite(playerAnimations.getPlayerIdleSprite());
+                setSprite(playerAnimations.getPlayerIdleSprite());
                 GlobalVariables.CameraMoving = false;
                 return;
             } else {
@@ -187,71 +167,46 @@ public class Player implements MovingEntity, KillableEntity {
                     case UP:
                         if (!checkCollisions(positionX, positionY - steps)) {
                             positionY -= steps;
-                            setCurrentSprite(playerAnimations.getMoveUpSprite());
+                            setSprite(playerAnimations.getMoveUpSprite());
                             currentDirection = Direction.UP;
                         }
                         break;
                     case DOWN:
                         if (!checkCollisions(positionX, positionY + steps)) {
                             positionY += steps;
-                            setCurrentSprite(playerAnimations.getMoveDownSprite());
+                            setSprite(playerAnimations.getMoveDownSprite());
                             currentDirection = Direction.DOWN;
                         }
                         break;
                     case LEFT:
                         if (!checkCollisions(positionX - steps, positionY)) {
                             positionX -= steps;
-                            setCurrentSprite(playerAnimations.getMoveLeftSprite());
+                            setSprite(playerAnimations.getMoveLeftSprite());
                             currentDirection = Direction.LEFT;
                         }
                         break;
                     case RIGHT:
                         if (!checkCollisions(positionX + steps, positionY)) {
                             positionX += steps;
-                            setCurrentSprite(playerAnimations.getMoveRightSprite());
+                            setSprite(playerAnimations.getMoveRightSprite());
                             currentDirection = Direction.RIGHT;
                         }
                         break;
                     default:
-                        setCurrentSprite(playerAnimations.getPlayerIdleSprite());
+                        setSprite(playerAnimations.getPlayerIdleSprite());
                 }
             }
         }
     }
 
     @Override
-    public int getPositionX() {
-        return positionX;
-    }
-
-    @Override
-    public int getPositionY() {
-        return positionY;
-    }
-
-    @Override
     public RectBoundedBox getBoundingBox() {
-        playerBoundary.setPosition(positionX, positionY);
-        return playerBoundary;
+        boundedBox.setPosition(positionX, positionY);
+        return boundedBox;
     }
 
-    @Override
     public boolean isCollidePlayer() {
         return true;
-    }
-
-    @Override
-    public int getLayer() {
-        return layer;
-    }
-
-    @Override
-    public double getScale() {
-        return scale;
-    }
-
-    public void setScale(double scale) {
-        this.scale = scale;
     }
 
     public boolean hasMoreBombs() {

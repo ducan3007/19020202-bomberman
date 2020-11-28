@@ -1,27 +1,53 @@
 
 package Bomberman.Entity;
 
+import Bomberman.Animations.Sprite;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
+import Bomberman.GlobalVariables.GlobalVariables;
 
-public interface Entity {
+public abstract class Entity {
 
-    boolean isCollideEntity(Entity b);
+    public int positionX;
+    public int positionY;
+    public int layer;
+    public int width;
+    public int height;
+    public double scale;
+    public RectBoundedBox boundedBox;
+    public Sprite sprite;
 
-    boolean isCollidePlayer();
+    abstract public boolean isCollideEntity(Entity b);
 
-    void render();
+    abstract public boolean isCollidePlayer();
 
-    int getPositionX();
+    abstract public void render();
 
-    int getPositionY();
+    abstract public boolean remove();
 
-    void setOffset();
+    public void setOffset() {
+        this.positionX -= GlobalVariables.offSet;
+        this.boundedBox.removeRect();
+        this.boundedBox.setOffset();
+        this.boundedBox.setBoundary();
+    }
 
-    boolean remove();
+    public int getPositionX() {
+        return positionX;
+    }
 
-    RectBoundedBox getBoundingBox();
+    public int getPositionY() {
+        return positionY;
+    }
 
-    int getLayer();
+    public RectBoundedBox getBoundingBox() {
+        return boundedBox;
+    }
 
-    double getScale();
+    public int getLayer() {
+        return layer;
+    }
+
+    public double getScale() {
+        return scale;
+    }
 }

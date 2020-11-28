@@ -5,13 +5,12 @@ import Bomberman.Animations.BrickAnimations;
 import Bomberman.Animations.Sprite;
 import Bomberman.GlobalVariables.GlobalVariables;
 import Bomberman.Entity.Entity;
-import Bomberman.Entity.KillableEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
 import Bomberman.Scene.Board;
 
 import java.util.Date;
 
-public class Brick extends Tile implements KillableEntity {
+public class Brick extends Tile {
     int items;
 
     boolean isAlive = true;
@@ -21,7 +20,6 @@ public class Brick extends Tile implements KillableEntity {
 
     Date destroyedTime;
     Date animationTime;
-    Sprite sprite;
     Sprite grass;
     Sprite CurrentSprite;
     BrickAnimations brickAnimations;
@@ -61,7 +59,6 @@ public class Brick extends Tile implements KillableEntity {
         return isAlive;
     }
 
-    @Override
     public void render() {
         if (BrickState()) {
             Renderer.playAnimation(CurrentSprite);
@@ -71,13 +68,11 @@ public class Brick extends Tile implements KillableEntity {
         }
     }
 
-    @Override
     public void die() {
         check = false;
         destroyedTime = new Date();
     }
 
-    @Override
     public boolean remove() {
         if (disappear) {
             switch (items) {
@@ -98,7 +93,6 @@ public class Brick extends Tile implements KillableEntity {
         return disappear;
     }
 
-    @Override
     public boolean isCollideEntity(Entity e) {
         RectBoundedBox rect = e.getBoundingBox();
         return super.boundedBox.checkCollision(rect);

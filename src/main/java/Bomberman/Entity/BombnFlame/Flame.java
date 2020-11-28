@@ -4,7 +4,6 @@ import Bomberman.Renderer;
 import Bomberman.Animations.Sprite;
 import Bomberman.GlobalVariables.GlobalVariables;
 import Bomberman.Entity.Entity;
-import Bomberman.Entity.StaticEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Flame implements StaticEntity {
+public class Flame extends Entity {
 
     static Image img = Renderer.getmainSheet();
     static List<Rectangle> vertical = new ArrayList<>();
@@ -61,23 +60,14 @@ public class Flame implements StaticEntity {
         center.add(new Rectangle(178, 188, 17, 17));
     }
 
-    int positionX;
-    int positionY;
     int direction;
-    int layer;
-    int height;
-    int width;
     int timing;
 
     boolean last;
 
-    double scale;
     double splayspeed;
 
     Date explodeTime;
-    Sprite sprite;
-    RectBoundedBox boundedBox;
-
 
     public Flame(int x, int y, int direction, boolean last) {
         this.positionX = x;
@@ -158,14 +148,6 @@ public class Flame implements StaticEntity {
     }
 
     @Override
-    public void setOffset() {
-        this.positionX -= GlobalVariables.offSet;
-        this.boundedBox.removeRect();
-        this.boundedBox.setOffset();
-        this.boundedBox.setBoundary();
-    }
-
-    @Override
     public void render() {
         if (!checkFlameState()) {
             Renderer.playAnimation(sprite);
@@ -181,30 +163,5 @@ public class Flame implements StaticEntity {
     @Override
     public boolean isCollidePlayer() {
         return true;
-    }
-
-    @Override
-    public int getPositionX() {
-        return positionX;
-    }
-
-    @Override
-    public int getPositionY() {
-        return positionY;
-    }
-
-    @Override
-    public RectBoundedBox getBoundingBox() {
-        return boundedBox;
-    }
-
-    @Override
-    public int getLayer() {
-        return layer;
-    }
-
-    @Override
-    public double getScale() {
-        return scale;
     }
 }

@@ -3,10 +3,9 @@ package Bomberman.Entity.Tiles;
 import Bomberman.Animations.Sprite;
 import Bomberman.GlobalVariables.GlobalVariables;
 import Bomberman.Entity.Entity;
-import Bomberman.Entity.StaticEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
 
-public class Grass extends Tile implements StaticEntity {
+public class Grass extends Tile {
 
     public Grass(int x, int y) {
         super(x,y);

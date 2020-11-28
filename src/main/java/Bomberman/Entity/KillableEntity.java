@@ -2,6 +2,6 @@
 package Bomberman.Entity;
 
 
-public interface KillableEntity extends Entity {
-    void die();
+public abstract class KillableEntity extends Entity {
+    abstract public void die();
 }

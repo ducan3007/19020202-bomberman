@@ -3,13 +3,11 @@ package Bomberman.Entity.Enemy;
 import Bomberman.Renderer;
 import Bomberman.Animations.OnealAnimations;
 import Bomberman.GlobalVariables.Direction;
-import Bomberman.Entity.KillableEntity;
-import Bomberman.Entity.MovingEntity;
 import Bomberman.Scene.Board;
 
 import java.util.Date;
 
-public class Oneal extends Balloom implements MovingEntity, KillableEntity {
+public class Oneal extends Balloom {
     OnealAnimations onealAnimations;
 
     public Oneal(int x, int y) {
@@ -59,7 +57,6 @@ public class Oneal extends Balloom implements MovingEntity, KillableEntity {
                 }
             }
         }
-
         switch (dir) {
             case 0:
                 move(step, Direction.UP);

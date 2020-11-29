@@ -38,7 +38,7 @@ public class Tile extends Entity {
         RectBoundedBox rect = e.getBoundingBox();
         return boundedBox.checkCollision(rect);
     }
-
+    public void die(){ }
     public boolean isCollidePlayer() {
         return false;
     }

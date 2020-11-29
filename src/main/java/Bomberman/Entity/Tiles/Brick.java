@@ -67,7 +67,7 @@ public class Brick extends Tile {
             Renderer.playAnimation(brickAnimations.getBrickAnimation());
         }
     }
-
+    @Override
     public void die() {
         check = false;
         destroyedTime = new Date();

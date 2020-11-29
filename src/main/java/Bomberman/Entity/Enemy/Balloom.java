@@ -1,12 +1,12 @@
 package Bomberman.Entity.Enemy;
 
+import Bomberman.Entity.MovingEntity;
 import Bomberman.Renderer;
 import Bomberman.Animations.BalloomAnimations;
 import Bomberman.Animations.Sprite;
 import Bomberman.GlobalVariables.Direction;
 import Bomberman.GlobalVariables.GlobalVariables;
 import Bomberman.Entity.Entity;
-import Bomberman.Entity.KillableEntity;
 import Bomberman.Entity.Boundedbox.RectBoundedBox;
 import Bomberman.Entity.BombnFlame.BlackBomb;
 import Bomberman.Entity.BombnFlame.Flame;
@@ -81,7 +81,7 @@ public class Balloom extends MovingEntity {
     public void RandomMoving() {
         int direction;
         if ((positionX % 48 == 0 && positionY % 48 == 0) || ((positionY + 2) % 48 == 0) || ((positionX + 2) % 48 == 0) ||
-                ((positionX + 8) % 48 == 0) || ((positionX - 8) % 48 == 0)) {
+                ((positionX - 8) % 48 == 0)||((positionX + 10) % 48 == 0) || ((positionY + 10) % 48 == 0)) {
             direction = random.nextInt(4);
             dir = direction;
         }

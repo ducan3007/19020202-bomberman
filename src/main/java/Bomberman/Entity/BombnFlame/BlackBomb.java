@@ -42,7 +42,7 @@ public class BlackBomb extends Entity {
         scale = 1.8;
         bomb_animations = new BombAnimations(this);
         sprite = bomb_animations.getBlackBomb();
-        boundedBox = new RectBoundedBox(positionX, positionY, (int) (width * (getScale() + 1.35)), (int) (height * (getScale() + 1.65)));
+        boundedBox = new RectBoundedBox(positionX, positionY, (int) (width * (getScale() + 1.26)), (int) (height * (getScale() + 1.26)));
         plantedTime = new Date();
         bombState = STATE.ACTIVE;
         Explosion = new FlameAnimations[5];
